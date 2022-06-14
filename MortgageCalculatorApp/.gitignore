@@ -1,0 +1,4 @@
+env/*
+CalculatorProject/**/__pycache__/
+.idea/*
+__init__.py
