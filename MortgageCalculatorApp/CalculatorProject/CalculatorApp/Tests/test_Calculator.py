@@ -5,35 +5,31 @@ from CalculatorApp.exceptions import CantSetInitialCost, CantSetLoanTerm, CantSe
 
 
 class TestCalculatorArguments(TestCase):
-    def test_argument_initial_cost_type(self):
-        """The test checks the data type of the argument initial_cost.
-        Only the int value allowed"""
-        with self.assertRaises(ValueError):
-            Calculator(
-                initial_cost='10000000',
-                time=5,
-                initial_fee=1000000,
-                interest_rate=5.6)
+    def test_arguments_type(self):
+        """The test checks the data type of the all arguments."""
+        arguments_case = [
+            {
+                'initial_cost': '10000000',
+                'time': 5,
+                'initial_fee': 1000000,
+                'interest_rate': 5.6
+            },
+            {
+                'initial_cost': 10000000,
+                'time': '5',
+                'initial_fee': 1000000,
+                'interest_rate': 5.6
+            },
+            {
+                'initial_cost': 10000000,
+                'time': 5,
+                'initial_fee': '1000000',
+                'interest_rate': 5.6},
 
-    def test_argument_time_type(self):
-        """The test checks the data type of the argument time.
-        Only the int value allowed"""
-        with self.assertRaises(ValueError):
-            Calculator(
-                initial_cost=10000000,
-                time='5',
-                initial_fee=1000000,
-                interest_rate=5.6)
-
-    def test_argument_initial_fee_type(self):
-        """The test checks the data type of the argument initial_fee.
-        Only the int value allowed"""
-        with self.assertRaises(ValueError):
-            Calculator(
-                initial_cost=10000000,
-                time=5,
-                initial_fee='1000000',
-                interest_rate=5.6)
+        ]
+        for arguments in arguments_case:
+            with self.assertRaises(ValueError):
+                Calculator(**arguments)
 
     def test_argument_initial_cost_max_value(self):
         """The test checks the maximum allowed value for an argument initial_cost"""
