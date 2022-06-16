@@ -118,26 +118,30 @@ class TestCalculatorMethods(TestCase):
     def test_annuity_payment_calculation(self):
         """The test checks the calculation of the final value that will be present in
         the final named tuple that should be given to the client as a response to his request"""
-        result = self.calculator._annuity_payment_calculation()
-        self.assertEqual(13677, result)
+        annuity_payment = self.calculator._annuity_payment_calculation()
+        expected_value = 13677
+        self.assertEqual(expected_value, annuity_payment)
 
     def test_get_total_cost_value(self):
         """This test checks the value returned by the _get_total_cost method.
         The final value returned by the method is rounded it will always be an integer"""
-        tested_result = self.calculator._get_total_cost()
-        self.assertEqual(750000, tested_result)
+        total_cost = self.calculator._get_total_cost()
+        expected_value = 750000
+        self.assertEqual(expected_value, total_cost)
 
     def test_get_monthly_rate_value(self):
         """The test checks the values returned by the _get_monthly_rate method.
         Due to the nature of the formula used, the return value will always be
         a floating point value."""
-        tested_result = self.calculator._get_monthly_rate()
-        self.assertEqual(0.003, tested_result)
+        monthly_rate = self.calculator._get_monthly_rate()
+        expected_value = 0.003
+        self.assertEqual(expected_value, monthly_rate)
 
     def test_get_calculator_values(self):
         """The test checks what values should be obtained as a result of
         calling the get_calculator_values method.
         This method returns a dictionary obtained from a named tuple"""
-        tested_result = self.calculator.get_calculator_values()
-        self.assertEqual({'time': 5, 'initial_cost': 1000000,
-                          'interest_rate': 4.0, 'initial_fee': 250000}, tested_result)
+        calculator_values = self.calculator.get_calculator_values()
+        expected_value = {'time': 5, 'initial_cost': 1000000,
+                          'interest_rate': 4.0, 'initial_fee': 250000}
+        self.assertEqual(expected_value, calculator_values)
