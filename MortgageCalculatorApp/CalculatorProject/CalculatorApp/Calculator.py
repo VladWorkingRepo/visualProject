@@ -1,9 +1,6 @@
-from typing import NamedTuple, Dict, TypeVar
+from typing import NamedTuple, Dict, Union
 
 from .exceptions import CantSetInitialCost, CantSetLoanTerm, CantSetInitialFee
-
-
-T = TypeVar('T', int, float)
 
 
 class ToCalculateData(NamedTuple):
@@ -60,7 +57,7 @@ class Calculator:
         if initial_fee < cls._MIN_INITIAL_FEE or initial_fee >= initial_cost:
             raise CantSetInitialFee
 
-    def get_calculator_values(self) -> Dict[str, T]:
+    def get_calculator_values(self) -> Dict[str, Union[int, float]]:
         """Returns validated values passed by the client"""
         return self.__calculator_data._asdict()
 
