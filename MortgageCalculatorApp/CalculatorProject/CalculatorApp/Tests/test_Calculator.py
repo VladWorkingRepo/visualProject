@@ -25,6 +25,11 @@ class TestCalculatorArguments(TestCase):
                 'time': 5,
                 'initial_fee': '1000000',
                 'interest_rate': 5.6},
+            {
+                'initial_cost': 10000000,
+                'time': 5,
+                'initial_fee': 1000000,
+                'interest_rate': 5}
 
         ]
         for arguments in arguments_case:

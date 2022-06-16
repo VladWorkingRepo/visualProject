@@ -33,8 +33,8 @@ class Calculator:
     _MIN_TIME = 2
     _MIN_INITIAL_FEE = 0
 
-    def __init__(self, initial_cost, time, interest_rate, initial_fee):
-        self.check_values(initial_cost, time, initial_fee)
+    def __init__(self, initial_cost, time, initial_fee, interest_rate):
+        self.check_values(initial_cost, time, initial_fee, interest_rate)
         self.__calculator_data = ToCalculateData(
             initial_cost=initial_cost,
             time=time,
@@ -43,9 +43,22 @@ class Calculator:
         )
 
     @classmethod
-    def check_values(cls, initial_cost, time, initial_fee) -> None:
+    def check_values(cls, initial_cost, time, initial_fee, interest_rate) -> None:
         """Checks the data received from the client"""
-        if any(not isinstance(x, int) for x in (initial_fee, initial_cost, time)):
+        arguments_case = {
+            'initial_cost': lambda x: isinstance(x, int),
+            'time': lambda x: isinstance(x, int),
+            'initial_fee': lambda x: isinstance(x, int),
+            'interest_rate': lambda x: isinstance(x, float)
+        }
+
+        if any(arguments_case[key](value) is False for key, value in
+               {
+                   'initial_cost': initial_cost,
+                   'time': time,
+                   'initial_fee': initial_fee,
+                   'interest_rate': interest_rate
+               }.items()):
             raise ValueError
 
         if initial_cost < cls._MIN_INITIAL_COST or initial_cost >= cls._MAX_INITIAL_COST:
