@@ -1,4 +1,4 @@
-from typing import NamedTuple, Dict, Union
+from typing import NamedTuple, Dict, Union, TypeVar
 
 from .exceptions import CantSetInitialCost, CantSetLoanTerm, CantSetInitialFee
 
@@ -10,10 +10,7 @@ class ToCalculateData(NamedTuple):
     initial_fee: int
 
 
-class FinalData(NamedTuple):
-    annuity_payment: int
-    differential_payment: int
-    interest_rate: float
+T = TypeVar('T', int, float, str)
 
 
 class Calculator:
@@ -33,8 +30,8 @@ class Calculator:
     _MIN_TIME = 2
     _MIN_INITIAL_FEE = 0
 
-    def __init__(self, initial_cost, time, initial_fee, interest_rate):
-        self.check_values(initial_cost, time, initial_fee, interest_rate)
+    def __init__(self, initial_cost, time, interest_rate, initial_fee):
+        self.check_values(initial_cost, time, interest_rate, initial_fee)
         self.__calculator_data = ToCalculateData(
             initial_cost=initial_cost,
             time=time,
@@ -43,7 +40,7 @@ class Calculator:
         )
 
     @classmethod
-    def check_values(cls, initial_cost, time, initial_fee, interest_rate) -> None:
+    def check_values(cls, initial_cost, time, interest_rate, initial_fee) -> None:
         """Checks the data received from the client"""
         arguments_case = {
             'initial_cost': lambda x: isinstance(x, int),
@@ -106,9 +103,9 @@ class Calculator:
         final_value = round(monthly_payment)
         return final_value
 
-    def get_final_values(self) -> FinalData:
+    def get_final_values(self) -> Dict[str, T]:
         """Allows you to get calculated values for annuity and differentiated monthly payments"""
-        final_dict = FinalData(annuity_payment=self._annuity_payment_calculation(),
-                               differential_payment=self._differential_payment_calculation(),
-                               interest_rate=self.__calculator_data.interest_rate)
+        final_dict = {'annuity_payment': self._annuity_payment_calculation(),
+                      'differential_payment': self._differential_payment_calculation(),
+                      'interest_rate': self.__calculator_data.interest_rate}
         return final_dict

@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from CalculatorApp.Calculator import Calculator, FinalData
+from CalculatorApp.Calculator import Calculator
 from CalculatorApp.exceptions import CantSetInitialCost, CantSetLoanTerm, CantSetInitialFee
 
 
@@ -29,7 +29,8 @@ class TestCalculatorArguments(TestCase):
                 'initial_cost': 10000000,
                 'time': 5,
                 'initial_fee': 1000000,
-                'interest_rate': 5}
+                'interest_rate': 5
+            }
 
         ]
         for arguments in arguments_case:
@@ -104,9 +105,11 @@ class TestCalculatorMethods(TestCase):
         It is this method that returns the prepared data structure
         that is used further in the program."""
         tested_result = self.calculator.get_final_values()
-        expected_result = FinalData(
-            annuity_payment=13677,
-            differential_payment=14750, interest_rate=4.0)
+        expected_result = {
+                            'annuity_payment': 13677,
+                            'differential_payment': 14750,
+                            'interest_rate': 4.0
+                          }
         self.assertEqual(expected_result, tested_result)
 
     def test_differential_payment_calculation(self):

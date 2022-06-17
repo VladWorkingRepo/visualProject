@@ -1,22 +1,12 @@
-from typing import List, Dict, NamedTuple, TypeVar
+from typing import List, Dict
 
-from .Calculator import Calculator, FinalData
+from .Calculator import Calculator, T
 from .models import Banks
-
-
-T = TypeVar('T', int, float, str)
-
-
-class FullDataUser(NamedTuple):
-    bank_name: str
-    annuity_payment: int
-    differential_payment: int
-    interest_rate: float
 
 
 def calculation_annuity_and_differentiated_payments(
         initial_cost: int, time: int,
-        interest_rate: float, initial_fee: int) -> FinalData:
+        interest_rate: float, initial_fee: int) -> Dict[str, T]:
     """Calculates annuity payment and differential payment values"""
     calculated_values = Calculator(initial_cost, time, interest_rate, initial_fee)
     result = calculated_values.get_final_values()
@@ -35,13 +25,12 @@ def data_for_client(validate_data: dict) -> List[Dict[str, T]]:
             initial_fee=validate_data['initial_fee'],
             interest_rate=bank.interest_rate)
 
-        full_information_for_client = FullDataUser(
-            bank_name=bank.bank_name,
-            annuity_payment=basic_information_for_client.annuity_payment,
-            differential_payment=basic_information_for_client.differential_payment,
-            interest_rate=basic_information_for_client.interest_rate)
+        basic_information_for_client.update(
+            {
+                'bank_name': bank.bank_name
+            }
+        )
 
-        prepared_data = full_information_for_client._asdict()
-        data_list_to_client.append(prepared_data)
+        data_list_to_client.append(basic_information_for_client)
 
     return data_list_to_client
